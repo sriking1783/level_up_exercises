@@ -1,6 +1,15 @@
 .app-side-bar
   %ul
-    %li= link_to 'Inbox'
-    %li= link_to 'Spam'
-    %li= link_to 'Draft'
+    %li{:id => 'inbox', :class => 'side_content'}= link_to 'Inbox'
+    %li{:id => 'spam',  :class => 'side_content'}= link_to 'Spam'
+    %li{:id => 'draft', :class => 'side_content'}= link_to 'Draft'
 
+:javascript
+  $('.side_content').hover(function(){
+    id = $(this).attr('id');
+    $("#"+id).css("background-color", "yellow")
+  }, function(){
+        // change to any color that was previously used.
+        $("#"+id).css('background-color', '');
+    }
+  );

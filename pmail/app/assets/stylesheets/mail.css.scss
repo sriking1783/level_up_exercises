@@ -5,5 +5,19 @@
   position: fixed;
   top: 30px;
   left: -20px;
+  width: 100px;
+  background-color: #f0f0f0;
 }
 
+.content {
+  position: fixed;
+  top: 30px;
+  left: 200px;
+  width: 5000px;
+  height: 500px;
+  background-color: #f0f0f0;
+}
+
+.mail:hover{
+  cursor: pointer;
+}
