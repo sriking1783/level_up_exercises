@@ -1,8 +1,11 @@
 .app-side-bar
-  %ul
-    %li{:id => 'inbox', :class => 'side_content'}= link_to 'Inbox'
-    %li{:id => 'spam',  :class => 'side_content'}= link_to 'Spam'
-    %li{:id => 'draft', :class => 'side_content'}= link_to 'Draft'
+  %div.compose
+    %input{:type => 'button', :style => "background-color: #F5F5F5;",:value =>"Compose"}
+  %div.menu
+    %span{:id => 'inbox', :class => 'side_content'}= link_to 'Inbox'
+    %span{:id => 'spam',  :class => 'side_content'}= link_to 'Spam'
+    %span{:id => 'draft', :class => 'side_content'}= link_to 'Drafts'
+    %span{:id => 'draft', :class => 'side_content'}= link_to 'Sent'
 
 :javascript
   $('.side_content').hover(function(){

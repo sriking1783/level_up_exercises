@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  get 'mail/index'
 
+  root to: 'mail#index'
   get 'mail/show'
 
   # The priority is based upon order of creation: first created -> highest priority.

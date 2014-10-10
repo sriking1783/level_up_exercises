@@ -3,21 +3,81 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 .app-side-bar {
   position: fixed;
-  top: 30px;
+  margin: 30px;
+  top: 40px;
   left: -20px;
-  width: 100px;
-  background-color: #f0f0f0;
+  width: 202px;
+  display: block;
+  font-family: arial;
 }
+.logo {
+  position: absolute;
+  margin-left: 60px;
+  font-size: 50px;
+  margin-top: 1px;
 
+}
+.email_page{
+  background: #23C3F0;
+}
+.search_icon{
+  position: relative;
+  color: white;
+  padding: 30px 20px 20px 20px;
+}
+.search_button{
+  position: absolute;
+  top: 8px;
+  right: 195px;
+  width: 55px;
+  height: 28.5px;
+  background: #4285f4;
+}
+.search_email{
+  float:left;
+  position:relative;
+  left:50%;
+}
+.caret-icon{
+  position: absolute;
+  top: 12px;
+  right: 260px;
+}
+.search_input{
+  float:left;
+  position:relative;
+  left:-50%;
+  border: none;
+  width: 500px;
+  height: 30px;
+  margin-top: 7px;
+  padding: 10px 30px 10px 10px;
+  border: 1px solid transparent;
+  @include transition(0.3s);
+}
+.compose{
+  background-color: #F5F5F5;
+  color: #444;
+  radius: 5px;
+  cursor: point;
+}
+.menu span a {
+  display: block;
+ }
 .content {
   position: fixed;
-  top: 30px;
+  top: 100px;
   left: 200px;
   width: 5000px;
-  height: 500px;
-  background-color: #f0f0f0;
+  height: 400px;
+  background-color: #f1f1f1;
+  overflow: scroll;
 }
 
 .mail:hover{
+  cursor: pointer;
+}
+
+.mail_row:hover{
   cursor: pointer;
 }
