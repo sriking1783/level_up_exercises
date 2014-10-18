@@ -10,6 +10,13 @@
   display: block;
   font-family: arial;
 }
+.border_left_color{
+  border-left-style: solid;
+  border-left-color: #4285f4;
+}
+.background_focus_color{
+  background-color: yellow;
+}
 .logo {
   position: absolute;
   margin-left: 60px;

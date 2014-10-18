@@ -8,12 +8,12 @@
     .search_button
       %span.search_icon= fa_icon 'search'
   %section.content
-    %table{:width => '968px'}
+    %table{:width => '968px',:id => "email_table"}
       - (1..50).each do |i|
         %tr{:class => "mail_row", :id => "mail_#{i}", :style => "border-width: 1px;  #000; border-style: solid;"}
-          %td
-            %img{:id => "img_#{i}", :src => "/images/grippy_large.png", :style => "visibility: hidden;"}
-            %input{:type=>"checkbox"}
+          %td{:id => "imgtd_#{i}",:class => "imgtd" }
+            %img{:id => "grippyimg_#{i}", :src => "/images/grippy_large.png", :style => "visibility: hidden;"}
+            %input{:type=>"checkbox", :class => "check_box_select", :id=> "checkbox_#{i}"}
           %td
             %img{:id => "img_#{i}", :src => "/images/star4.png"}
           %td
@@ -28,11 +28,82 @@
 
 
 :javascript
+  var mail = -1;
+  var side_content = -1;
   $('.mail').hover(function(){
   });
   $('.mail_row').hover(function(){
     id = this.id.split('_')[1]
-    $('#img_'+id).css('visibility', 'visible');
+    $('#grippyimg_'+id).css('visibility', 'visible');
   }, function(){
-      $('#img_'+id).css('visibility', 'hidden');
+      $('#grippyimg_'+id).css('visibility', 'hidden');
+  });
+
+  $('.check_box_select').click(function(){
+    id = this.id.split('_')[1];
+    $('#imgtd_'+id).addClass("border_left_color");
+
+  });
+
+  $(document).ready(function(){
+    $(document).keydown(function(e)
+      {
+        switch(e.keyCode) {
+          case 37: // left
+            mail = -1;
+            side_content = 1;
+            $('.imgtd').removeClass("border_left_color");
+            $('#sidecontent_'+(side_content)).focus();
+            break;
+          case 39: // right
+            mail = 0;
+            side_content = - 1;
+            $('#imgtd_'+(mail+1)).addClass("border_left_color");
+            break;
+          case 38: // up
+            if(mail > 0){
+              side_content = -1
+              mail = mail - 1;
+              id1 = $('.imgtd').closest(".border_left_color").attr("id");
+              alert_str = ""
+              id = id1.split("_")[1];
+              idx = id - 1;
+              $('.imgtd').removeClass("border_left_color");
+              $('#imgtd_'+(idx)).addClass("border_left_color");
+            }
+            if(side_content > 0){
+              mail = -1;
+              side_content = side_content - 1
+
+              id1 = $('.side_content').closest(".border_left_color").attr("id");
+              alert_str = ""
+              id = id1.split("_")[1];
+              idx = id - 1;
+              $('.side_content').removeClass("border_left_color");
+              $('#sidecontent_'+(idx)).focus();
+            }
+            break;
+          case 40: // down
+            if(mail > -1){
+              side_content = - 1;
+              mail = mail + 1 ;
+              idx = mail;
+              $('.imgtd').removeClass("border_left_color");
+              $('#imgtd_'+(idx+1)).addClass("border_left_color");
+            }
+            if(side_content > -1){
+               mail = -1;
+               side_content = side_content - 1
+
+               id1 = $('.side_content').closest(".border_left_color").attr("id");
+               alert_str = ""
+               id = id1.split("_")[1];
+               idx = id + 1;
+               $('.side_content').removeClass("border_left_color");
+               $('#sidecontent_'+(idx)).css("background-color", "yellow");
+            }
+            break;
+          default: return; // exit this handler for other keys
+    }
+      });
   });
