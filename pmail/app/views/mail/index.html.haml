@@ -52,8 +52,9 @@
           case 37: // left
             mail = -1;
             side_content = 1;
+            alert("hi");
             $('.imgtd').removeClass("border_left_color");
-            $('#sidecontent_'+(side_content)).focus();
+            $('#sidecontent_'+(side_content)).addClass("background_focus_color");
             break;
           case 39: // right
             mail = 0;
