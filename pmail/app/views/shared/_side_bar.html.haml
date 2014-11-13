@@ -2,14 +2,17 @@
   %div.compose
     %input{:type => 'button', :style => "background-color: #F5F5F5;",:value =>"Compose"}
   %div.menu
-    %span{:id => 'sidecontent_1', :class => 'side_content'}= link_to 'Inbox', :style=> "background-color: yellow;"
-    %span{:id => 'sidecontent_2', :class => 'side_content'}= link_to 'Spam'
-    %span{:id => 'sidecontent_3', :class => 'side_content'}= link_to 'Drafts'
-    %span{:id => 'sidecontent_4', :class => 'side_content'}= link_to 'Sent'
+    %div.inbox{:id => 'sidecontent_1'}
+      %span{:id => '', :class => 'side_content'}= link_to 'Inbox'
+    %div.spam{:id => 'sidecontent_2'}
+      %span{:class => 'side_content'}= link_to 'Spam'
+    %div.drafts{:id => 'sidecontent_3'}
+      %span{:class => 'side_content'}= link_to 'Drafts'
+    %div.sent{:id => 'sidecontent_4'}
+      %span{ :class => 'side_content'}= link_to 'Sent'
 
 :javascript
   $('.side_content').hover(function(){
-    id = $(this).attr('id');
     $(this).focus();
   }, function(){
         // change to any color that was previously used.
