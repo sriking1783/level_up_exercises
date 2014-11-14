@@ -51,13 +51,14 @@
         switch(e.keyCode) {
           case 37: // left
             mail = -1;
-            side_content = 1;
+            side_content = 0;
             $('.imgtd').removeClass("border_left_color");
-            $('#sidecontent_'+(side_content)).addClass("background_focus_color");
+            $('#sidecontent_'+(side_content+1)).addClass("background_focus_color");
             break;
           case 39: // right
             mail = 0;
             side_content = - 1;
+            $('.side_content').removeClass("background_focus_color");
             $('#imgtd_'+(mail+1)).addClass("border_left_color");
             break;
           case 38: // up
@@ -75,12 +76,12 @@
               mail = -1;
               side_content = side_content - 1
 
-              id1 = $('.side_content').closest(".border_left_color").attr("id");
+              id1 = $('.side_content').closest(".background_focus_color").attr("id");
               alert_str = ""
               id = id1.split("_")[1];
-              idx = id - 1;
-              $('.side_content').removeClass("border_left_color");
-              $('#sidecontent_'+(idx)).focus();
+              idx = parseInt(id) - 1;
+              $('.side_content').removeClass("background_focus_color");
+              $('#sidecontent_'+(idx)).addClass("background_focus_color");
             }
             break;
           case 40: // down
@@ -93,14 +94,14 @@
             }
             if(side_content > -1){
                mail = -1;
-               side_content = side_content - 1
+               side_content = side_content + 1
 
-               id1 = $('.side_content').closest(".border_left_color").attr("id");
-               alert_str = ""
+               id1 = $('.side_content').closest(".background_focus_color").attr("id");
+
                id = id1.split("_")[1];
-               idx = id + 1;
-               $('.side_content').removeClass("border_left_color");
-               $('#sidecontent_'+(idx)).css("background-color", "yellow");
+               idx = parseInt(id) + 1;
+               $('.side_content').removeClass("background_focus_color");
+               $('#sidecontent_'+(idx)).addClass("background_focus_color");
             }
             break;
           default: return; // exit this handler for other keys

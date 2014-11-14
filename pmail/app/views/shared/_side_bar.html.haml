@@ -2,20 +2,20 @@
   %div.compose
     %input{:type => 'button', :style => "background-color: #F5F5F5;",:value =>"Compose"}
   %div.menu
-    %div.inbox{:id => 'sidecontent_1'}
-      %span{:id => '', :class => 'side_content'}= link_to 'Inbox'
-    %div.spam{:id => 'sidecontent_2'}
-      %span{:class => 'side_content'}= link_to 'Spam'
-    %div.drafts{:id => 'sidecontent_3'}
-      %span{:class => 'side_content'}= link_to 'Drafts'
-    %div.sent{:id => 'sidecontent_4'}
-      %span{ :class => 'side_content'}= link_to 'Sent'
+    %div.inbox{:id => 'sidecontent_1', :class => 'side_content'}
+      %span{:id => ''}= link_to 'Inbox'
+    %div.spam{:id => 'sidecontent_2', :class => 'side_content'}
+      %span{}= link_to 'Spam'
+    %div.drafts{:id => 'sidecontent_3', :class => 'side_content'}
+      %span{}= link_to 'Drafts'
+    %div.sent{:id => 'sidecontent_4', :class => 'side_content'}
+      %span{}= link_to 'Sent'
 
 :javascript
   $('.side_content').hover(function(){
-    $(this).focus();
+    $(this).css('background-color','#ffffff');
   }, function(){
         // change to any color that was previously used.
-        $(this).css('background-color','#4285f4');
+        $(this).css('background-color','#23C3F0');
     }
   );
