@@ -9,27 +9,25 @@ class Robot
   end
 
   def name
-    if @name_generator
-      robot_name = @name_generator.call
-    else
-      robot_name = generate_characters + generate_numbers
-    end
-    raise NameCollisionError, "There was a problem generating the robot name!" unless name_valid?(robot_name)
+    return @name unless @name.nil?
 
-    @@registry << robot_name
-    robot_name
+    if @name_generator
+      @name = @name_generator.call
+    else
+      @name = generate_characters + generate_numbers
+    end
+    raise NameCollisionError, "There was a problem generating the robot name!" unless name_valid?(@name)
+
+    @@registry << @name
+    @name
   end
 
   def generate_characters
-    characters = ""
-    2.times { characters << ('A'..'Z').to_a.sample }
-    characters
+    2.times.inject(''){|s| s << ('A'..'Z').to_a.sample }
   end
 
   def generate_numbers
-    numbers = ""
-    3.times { numbers << rand(10).to_s }
-    numbers
+    3.times.inject(''){|s| s << rand(10).to_s }
   end
 
   def name_valid?(robot_name)
@@ -40,6 +38,9 @@ end
 robot = Robot.new
 puts "My pet robot's name is #{robot.name}, but we usually call him sparky."
 
+1000000.times.each do |n|
+  puts " My pet robot's name is #{Robot.new.name}, but we usually call him sparky."
+end
 # Errors!
 # generator = -> { 'AA111' }
 # Robot.new(name_generator: generator)
