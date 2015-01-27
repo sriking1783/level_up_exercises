@@ -8,20 +8,15 @@ for(var i = 0; i < keys.length; i++) {
     var input = document.querySelector('.screen');
     var inputVal = input.innerHTML;
     var btnVal = this.innerHTML;
-
     if(btnVal == 'C') {
       input.innerHTML = '';
       decimalAdded = false;
     }
 
-
     else {
-
       var lastChar = inputVal[inputVal.length - 1];
-
       if(inputVal != '' && operators.indexOf(lastChar) == -1)
         input.innerHTML += btnVal;
-
       else if(inputVal == '' && btnVal == '-')
         input.innerHTML += btnVal;
 
