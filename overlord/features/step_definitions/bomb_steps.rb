@@ -22,10 +22,9 @@ When(/^I enter right "(.*?)"$/) do |arg1|
   %w(1 2 3 4 5).each do |num|
     find(:css, ".keypad-"+num).click
   end
-
+  Capybara.default_driver = Capybara.javascript_driver
   require 'pry'
   binding.pry
-    Capybara.current_driver = :webkit
   page.execute_script("jQuery('.screen').click()")
 
   save_and_open_page

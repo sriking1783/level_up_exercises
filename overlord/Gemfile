@@ -30,9 +30,8 @@ group :test do
   gem 'selenium-webdriver'
   gem 'capybara-angular'
   gem 'xpath'
-  gem 'culerity'
-  gem 'celerity', :require => nil
   gem 'poltergeist'
-  gem 'vcr'
-  gem 'capybara-webkit', '~> 1.1.0'
+  gem 'capybara-screenshot'
+  gem 'pickle',           '0.4.10', git: 'https://github.com/companygardener/pickle.git'
+  gem 'webmock'
 end
