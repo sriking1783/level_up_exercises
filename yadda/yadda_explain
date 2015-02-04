@@ -24,7 +24,7 @@ yadda_development=# EXPLAIN ANALYZE select * from yadda.recent_average_rating_vi
 
 Time: 1727.054 ms
 
-Here I see Group cost, Merge Join costs are too high. So definitely need to add indexes on these columns
+Here I see Group cost, Merge Join costs are too high. So definitely need to add indexes on beer_id. More sequential scans on ratings
 
 
 
