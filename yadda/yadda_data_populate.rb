@@ -18,17 +18,10 @@ require 'populator'
     "','#{Faker::Internet.email}','#{Faker::Internet.password}','#{Faker::PhoneNumber.phone_number}',"+r.rand(1..10).to_s+")"
    @connection.connection.execute(sql);
 end
- @connection.connection.execute("INSERT INTO yadda.beer_categories (category) VALUES('British Ale')," +
-   "('Irish Ale'),"+
-   "('North American Ale'),('German Ale'),('Belgian and French Ale'),"+
-   "('International Ale'),('German Lager'),('North American Lager'),"+
-   "('Other Lager'),('International Lager'),('Other Style')");
 
-(1..11).each do |n|
-  (1..1000).each do |m|
-    @connection.connection.execute("INSERT INTO yadda.beer_styles(category_id, style)
-     VALUES(#{n},'"+Populator.words(1..3).titleize+"')")
-  end
+(1..1000).each do |m|
+  @connection.connection.execute("INSERT INTO yadda.beer_styles(style)
+    VALUES('"+Populator.words(1..3).titleize+"')")
 end
 
 addresses = "SELECT * from yadda.addresses"
@@ -48,9 +41,9 @@ breweries = "select * from yadda.breweries"
 (1..1000).each do |m|
   @result_breweries.each do |row|
     r= Random.new
-    @connection.connection.execute("INSERT INTO yadda.beers(style_id, brewery_id, brewing_year, description)
+    @connection.connection.execute("INSERT INTO yadda.beers(style_id, brewery_id, brewing_year, description,name)
     VALUES('"+r.rand(1..110).to_s+"',"+
-     row["id"]+","+"#{r.rand(1960...1985)},'')")
+     row["id"]+","+"#{r.rand(1960...1985)},'','"+Populator.words(1..4).titleize+"')")
   end
 end
 

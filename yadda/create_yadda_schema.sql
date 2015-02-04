@@ -35,20 +35,15 @@ CREATE TABLE yadda.breweries(
   description   TEXT
   );
 
-CREATE TABLE yadda.beer_categories(
-  id            SERIAL       PRIMARY KEY,
-  category      TEXT         NOT NULL
-);
-
 CREATE TABLE yadda.beer_styles(
   id            SERIAL       PRIMARY KEY,
-  category_id   INTEGER      NOT NULL REFERENCES yadda.beer_categories ON DELETE CASCADE,
   style         TEXT         NOT NULL
 );
 
 CREATE TABLE yadda.beers(
   id            SERIAL       PRIMARY KEY,
   style_id      INTEGER      NOT NULL REFERENCES yadda.beer_styles ON DELETE CASCADE,
+  name          TEXT         NOT NULL,
   brewing_year  INTEGER      NOT NULL,
   brewery_id    INTEGER      REFERENCES yadda.breweries ON DELETE CASCADE,
   created_by    TEXT         ,
