@@ -1,0 +1,91 @@
+EXPLAIN ANALYZE select * from yadda.recent_average_rating_view;
+                                                                         QUERY PLAN
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=12054.94..13679.78 rows=49995 width=49) (actual time=1242.207..1714.044 rows=9742 loops=1)
+   ->  Sort  (cost=12054.94..12179.93 rows=49995 width=49) (actual time=1242.153..1691.255 rows=49995 loops=1)
+         Sort Key: st.style, b.name
+         Sort Method: external merge  Disk: 3032kB
+         ->  Hash Join  (cost=30.59..6441.46 rows=49995 width=49) (actual time=0.338..77.562 rows=49995 loops=1)
+               Hash Cond: (b.style_id = st.id)
+               ->  Merge Join  (cost=1.09..5724.53 rows=49995 width=40) (actual time=0.019..63.324 rows=49995 loops=1)
+                     Merge Cond: (b.id = r.beer_id)
+                     ->  Index Scan using beers_pkey on beers b  (cost=0.42..40329.63 rows=1000112 width=24) (actual time=0.006..2.694 rows=10000 loops=1)
+                     ->  Index Scan using beer_id_idx on ratings r  (cost=0.29..4610.02 rows=49995 width=24) (actual time=0.009..49.372 rows=49995 loops=1)
+                           Filter: (created_on > (('now'::cstring)::date - '6 mons'::interval))
+               ->  Hash  (cost=17.00..17.00 rows=1000 width=17) (actual time=0.315..0.315 rows=1000 loops=1)
+                     Buckets: 1024  Batches: 1  Memory Usage: 51kB
+                     ->  Seq Scan on beer_styles st  (cost=0.00..17.00 rows=1000 width=17) (actual time=0.006..0.148 rows=1000 loops=1)
+ Total runtime: 1719.890 ms
+(15 rows)
+
+
+ EXPLAIN ANALYZE select * from yadda.average_rating_view;
+                                                                         QUERY PLAN
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=11554.99..13179.83 rows=49995 width=49) (actual time=1229.531..1731.339 rows=9742 loops=1)
+   ->  Sort  (cost=11554.99..11679.98 rows=49995 width=49) (actual time=1229.463..1706.512 rows=49995 loops=1)
+         Sort Key: st.style, b.name
+         Sort Method: external merge  Disk: 3032kB
+         ->  Hash Join  (cost=30.55..5941.51 rows=49995 width=49) (actual time=0.687..52.396 rows=49995 loops=1)
+               Hash Cond: (b.style_id = st.id)
+               ->  Merge Join  (cost=1.05..5224.58 rows=49995 width=40) (actual time=0.020..37.752 rows=49995 loops=1)
+                     Merge Cond: (b.id = r.beer_id)
+                     ->  Index Scan using beers_pkey on beers b  (cost=0.42..40329.63 rows=1000112 width=24) (actual time=0.011..2.696 rows=10000 loops=1)
+                     ->  Index Scan using beer_id_idx on ratings r  (cost=0.29..4110.07 rows=49995 width=24) (actual time=0.007..20.613 rows=49995 loops=1)
+               ->  Hash  (cost=17.00..17.00 rows=1000 width=17) (actual time=0.649..0.649 rows=1000 loops=1)
+                     Buckets: 1024  Batches: 1  Memory Usage: 51kB
+                     ->  Seq Scan on beer_styles st  (cost=0.00..17.00 rows=1000 width=17) (actual time=0.009..0.237 rows=1000 loops=1)
+ Total runtime: 1737.538 ms
+(14 rows)
+
+
+
+explain analyze SELECT * FROM
+yadda_development-#       (SELECT *
+yadda_development(#         FROM yadda.average_rating_view where style_name IN (
+yadda_development(#           SELECT st.style from yadda.beer_styles st
+yadda_development(#             JOIN yadda.beers b ON b.style_id = st.id
+yadda_development(#             AND b.name = 'Ad Nulla Qui Ut'
+yadda_development(#       )and beer_name <>'Ad Nulla Qui Ut' ORDER BY rating DESC LIMIT 3
+yadda_development(#   )tmp ORDER by random();
+                                                                                        QUERY PLAN
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=14234.92..14234.93 rows=3 width=61) (actual time=1219.116..1219.116 rows=0 loops=1)
+   Sort Key: (random())
+   Sort Method: quicksort  Memory: 25kB
+   ->  Subquery Scan on tmp  (cost=14234.85..14234.90 rows=3 width=61) (actual time=1219.090..1219.090 rows=0 loops=1)
+         ->  Limit  (cost=14234.85..14234.86 rows=3 width=61) (actual time=1219.089..1219.089 rows=0 loops=1)
+               ->  Sort  (cost=14234.85..14297.35 rows=24997 width=61) (actual time=1219.087..1219.087 rows=0 loops=1)
+                     Sort Key: (avg(((((r.look + r.smell) + r.taste) + r.feel) + r.overall)))
+                     Sort Method: quicksort  Memory: 25kB
+                     ->  Merge Semi Join  (cost=11649.08..13911.77 rows=24997 width=61) (actual time=1219.005..1219.005 rows=0 loops=1)
+                           Merge Cond: (st_1.style = st.style)
+                           ->  GroupAggregate  (cost=11583.44..13208.25 rows=49994 width=49) (actual time=1218.916..1218.916 rows=1 loops=1)
+                                 ->  Sort  (cost=11583.44..11708.43 rows=49994 width=49) (actual time=1218.861..1218.900 rows=6 loops=1)
+                                       Sort Key: st_1.style, b_1.name
+                                       Sort Method: external merge  Disk: 3032kB
+                                       ->  Hash Join  (cost=30.55..5970.04 rows=49994 width=49) (actual time=1.241..51.916 rows=49995 loops=1)
+                                             Hash Cond: (b_1.style_id = st_1.id)
+                                             ->  Merge Join  (cost=1.05..5253.13 rows=49994 width=40) (actual time=0.023..37.410 rows=49995 loops=1)
+                                                   Merge Cond: (b_1.id = r.beer_id)
+                                                   ->  Index Scan using beers_pkey on beers b_1  (cost=0.42..42829.91 rows=1000098 width=24) (actual time=0.012..3.538 rows=10000 loops=1)
+                                                         Filter: (name <> 'Ad Nulla Qui Ut'::text)
+                                                   ->  Index Scan using beer_id_idx on ratings r  (cost=0.29..4110.07 rows=49995 width=24) (actual time=0.007..20.388 rows=49995 loops=1)
+                                             ->  Hash  (cost=17.00..17.00 rows=1000 width=17) (actual time=1.202..1.202 rows=1000 loops=1)
+                                                   Buckets: 1024  Batches: 1  Memory Usage: 51kB
+                                                   ->  Seq Scan on beer_styles st_1  (cost=0.00..17.00 rows=1000 width=17) (actual time=0.008..0.545 rows=1000 loops=1)
+                           ->  Sort  (cost=65.64..65.67 rows=14 width=13) (actual time=0.087..0.087 rows=0 loops=1)
+                                 Sort Key: st.style
+                                 Sort Method: quicksort  Memory: 25kB
+                                 ->  Merge Join  (cost=59.94..65.37 rows=14 width=13) (actual time=0.081..0.081 rows=0 loops=1)
+                                       Merge Cond: (st.id = b.style_id)
+                                       ->  Index Scan using beer_styles_pkey on beer_styles st  (cost=0.28..45.28 rows=1000 width=17) (actual time=0.011..0.011 rows=1 loops=1)
+                                       ->  Sort  (cost=59.66..59.70 rows=14 width=4) (actual time=0.068..0.068 rows=0 loops=1)
+                                             Sort Key: b.style_id
+                                             Sort Method: quicksort  Memory: 25kB
+                                             ->  Bitmap Heap Scan on beers b  (cost=4.53..59.40 rows=14 width=4) (actual time=0.039..0.039 rows=0 loops=1)
+                                                   Recheck Cond: (name = 'Ad Nulla Qui Ut'::text)
+                                                   ->  Bitmap Index Scan on name_idx  (cost=0.00..4.53 rows=14 width=0) (actual time=0.038..0.038 rows=0 loops=1)
+                                                         Index Cond: (name = 'Ad Nulla Qui Ut'::text)
+ Total runtime: 1224.511 ms
+(38 rows)
