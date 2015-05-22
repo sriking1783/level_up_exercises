@@ -1,6 +1,31 @@
 # A sample Gemfile
 source "https://rubygems.org"
 
-ruby "2.0.0"
+ruby "2.1.5"
+gem 'haml', '3.1.7'
 
 gem "sinatra"
+
+gem 'pry'
+gem 'pry-byebug', '~> 3.0', platforms: [:mri_21, :mri_22], require: false
+gem 'pry-stack_explorer', '~> 0.4', require: false
+gem 'pry-remote', '~> 0.1', require: false
+gem 'pry-rescue', '~> 1.4', require: false
+
+group :test do
+  gem 'rspec-expectations', require: 'rspec/expectations'
+  gem 'timecop'
+  gem 'rack-test', require: 'rack/test'
+  gem 'rspec'
+  gem 'cucumber'
+  gem 'cucumber-sinatra'
+  gem 'launchy'
+  gem 'capybara'
+  gem 'nokogiri'
+  gem 'selenium-webdriver'
+  gem 'capybara-angular'
+  gem 'xpath'
+  gem 'poltergeist'
+  gem 'capybara-webkit', '~> 1.1.0'
+end
+
