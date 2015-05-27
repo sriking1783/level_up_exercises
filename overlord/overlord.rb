@@ -10,23 +10,28 @@ class Overlord < Sinatra::Application
     session[:bombs]
   end
 
-  get "/:bomb_id" do
+  get "/bomb" do
     bomb = Bomb.find(params[:bomb_id])
   end
 
   post "/bomb" do
+    last_bomb_id = ( Bomb.last && Bomb.last.id ) || 0
     bomb_parameters = prepare_bomb_params(params)
-    bomb = Bomb.new(bomb_id, bomb_parameters)
+    bomb = Bomb.new(last_bomb_id + 1, bomb_parameters)
+    session[:bombs] ||= {}
     session[:bombs][bomb.id] = bomb
   end
 
   post '/bomb_activate' do
+    # require 'pry'
+    # binding.pry
     bomb = Bomb.find(params[:bomb_id])
     bomb.activate(params["activation_code"])
   end
 
   post "/bomb_deactivate" do
     bomb = Bomb.find(params[:bomb_id])
+
     bomb.deactivate(params["deactivation_code"])
   end
 
