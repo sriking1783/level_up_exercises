@@ -23,8 +23,6 @@ class Overlord < Sinatra::Application
   end
 
   post '/bomb_activate' do
-    # require 'pry'
-    # binding.pry
     bomb = Bomb.find(params[:bomb_id])
     bomb.activate(params["activation_code"])
   end
@@ -35,7 +33,10 @@ class Overlord < Sinatra::Application
     bomb.deactivate(params["deactivation_code"])
   end
 
-  post "/:bomb_id/diffuse" do
+  post "/bomb_diffuse" do
+    bomb = Bomb.find(params[:bomb_id])
+    wire_color = params["wire_color"].to_sym
+    bomb.diffuse(wire_color)
   end
 
   # we can shove stuff into the session cookie YAY!
