@@ -1,25 +1,39 @@
 # run `ruby overlord.rb` to run a webserver for this app
 
 require "sinatra"
-
+require 'sinatra/contrib'
+require_relative 'bomb'
 enable :sessions
 
 class Overlord < Sinatra::Application
   get "/" do
     "Time to build an app around here. Start time: " + start_time
-    session[:bombs]
+    require 'pry'
+    binding.pry
+    @bombs = Bomb.all
+    p @bombs
+    haml :bomb
   end
 
   get "/bomb" do
-    bomb = Bomb.find(params[:bomb_id])
+    @bomb = Bomb.find(params[:bomb_id])
+    haml :bomb
   end
 
   post "/bomb" do
     last_bomb_id = ( Bomb.last && Bomb.last.id ) || 0
+    puts last_bomb_id.to_s
     bomb_parameters = prepare_bomb_params(params)
-    bomb = Bomb.new(last_bomb_id + 1, bomb_parameters)
+    @bomb = Bomb.new(last_bomb_id + 1, bomb_parameters)
     session[:bombs] ||= {}
-    session[:bombs][bomb.id] = bomb
+    session[:bombs][@bomb.id] = @bomb
+    respond_to do |format|
+      format.json { @bomb.to_json }
+      format.html { haml :bomb }
+    end
+  end
+
+  get '/bomb_activate' do
   end
 
   post '/bomb_activate' do

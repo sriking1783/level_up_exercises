@@ -1,7 +1,9 @@
+require_relative 'overlord'
+
 desc 'List defined routes'
 task 'routes' do
 
-  App::routes.each_pair do |method, list|
+  Overlord::routes.each_pair do |method, list|
     puts ":: #{method} ::"
     routes = []
     list.each do |item|
@@ -16,3 +18,5 @@ task 'routes' do
   end
 
 end
+require 'jasmine'
+load 'jasmine/tasks/jasmine.rake'

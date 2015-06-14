@@ -11,18 +11,23 @@ gem 'pry-byebug', '~> 3.0', platforms: [:mri_21, :mri_22], require: false
 gem 'pry-stack_explorer', '~> 0.4', require: false
 gem 'pry-remote', '~> 0.1', require: false
 gem 'pry-rescue', '~> 1.4', require: false
+gem 'haml', '3.1.7'
+gem "coffee-script"
+gem 'sinatra-contrib'
+
+
+group :development, :test do
+  gem 'jasmine'
+end
 
 group :test do
   gem 'rspec-expectations', require: 'rspec/expectations'
   gem 'timecop'
   gem 'rack-test', require: 'rack/test'
   gem 'rspec'
-  gem 'cucumber'
-  gem 'cucumber-sinatra'
   gem 'launchy'
   gem 'capybara'
   gem 'nokogiri'
-  gem 'selenium-webdriver'
   gem 'capybara-angular'
   gem 'xpath'
   gem 'poltergeist'

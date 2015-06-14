@@ -13,6 +13,9 @@ class Bomb
     @failed_deactivation_attempts = 0
   end
 
+  def self.all
+    ObjectSpace.each_object(self).to_a
+  end
 
   def self.last
     last_id = self.max_id
@@ -21,7 +24,7 @@ class Bomb
 
   def self.find(id)
     bomb = ObjectSpace.each_object(self).to_a.select {|bomb| bomb.id == id.to_i}.last
-    bomb.status = 'explode' if time_to_explode?(bomb) && bomb.status == "active"
+    bomb.status = 'explode' if bomb && time_to_explode?(bomb) && bomb.status == "active"
     bomb
   end
 
@@ -61,7 +64,7 @@ class Bomb
   end
 
   def self.time_to_explode?(bomb)
-    !(bomb.activated_time.nil?) &&
+    (bomb.activated_time != nil) &&
       (Time.now >= bomb.activated_time + bomb.detonation_time)
   end
 end
