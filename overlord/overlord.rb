@@ -2,33 +2,33 @@
 
 require "sinatra"
 require 'sinatra/contrib'
+require 'json'
 require_relative 'bomb'
 enable :sessions
 
 class Overlord < Sinatra::Application
   get "/" do
     "Time to build an app around here. Start time: " + start_time
-    require 'pry'
-    binding.pry
     @bombs = Bomb.all
+    session[:bombs] = {}
     p @bombs
     haml :bomb
   end
 
-  get "/bomb" do
+  get "/bomb/:bomb_id" do
     @bomb = Bomb.find(params[:bomb_id])
-    haml :bomb
+    haml :bomb_activate
   end
 
   post "/bomb" do
     last_bomb_id = ( Bomb.last && Bomb.last.id ) || 0
-    puts last_bomb_id.to_s
     bomb_parameters = prepare_bomb_params(params)
     @bomb = Bomb.new(last_bomb_id + 1, bomb_parameters)
-    session[:bombs] ||= {}
     session[:bombs][@bomb.id] = @bomb
+    @bombs = Bomb.all
+    serialized_bomb =  { status: @bomb.status, activation_code: @bomb.activation_code, deactivation_code: @bomb.deactivation_code}.to_json
     respond_to do |format|
-      format.json { @bomb.to_json }
+      format.json { serialized_bomb }
       format.html { haml :bomb }
     end
   end

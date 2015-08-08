@@ -28,6 +28,10 @@ class Bomb
     bomb
   end
 
+  def to_json
+    { status: status, activation_code: activation_code, deactivation_code: deactivation_code}.to_json
+  end
+
   def activate(activate_code)
     @activated_time = Time.now
     @status = 'active' if activation_code == activate_code
